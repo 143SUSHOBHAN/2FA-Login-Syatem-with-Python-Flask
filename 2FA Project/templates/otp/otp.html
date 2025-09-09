@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification | Cyberpunk 3D</title>
+    <!-- External Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='otp/otp-style.css') }}">
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="login-container">
+        <h1 class="glitch" data-text="VERIFY OTP">VERIFY OTP</h1>
+        <form id="otpForm" action="/verify" method="POST">
+            <p style="text-align: center; color: #0ff; margin-bottom: 20px;">
+                Enter the 4-digit code sent to your email
+            </p>
+
+            <div class="otp-container">
+                <input type="text" class="otp-input" maxlength="1" pattern="\d" inputmode="numeric" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d" inputmode="numeric" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d" inputmode="numeric" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d" inputmode="numeric" required>
+            </div>
+
+            <!-- Countdown timer -->
+            <div class="countdown" id="countdown" style="text-align: center; margin: 15px 0; color: #0ff;">
+                Time remaining: <span id="time-left">30</span>s
+            </div>
+
+            <!-- Hidden field for final OTP -->
+            <input type="hidden" name="otp" id="finalOtp">
+
+            <button type="submit" id="verifyBtn" style="margin-top: 10px;">VERIFY OTP</button>
+
+            <div class="resend-otp" id="resendSection" style="display: none;">
+                Didn't receive code? <a href="#" id="resendOtp">Resend OTP</a>
+            </div>
+            
+            <!-- Error/Success message -->
+            <div id="message" style="margin-top: 15px; text-align: center; min-height: 20px;"></div>
+
+            <p class="register-link">Back to <a href="{{ url_for('login') }}">Login</a></p>
+        </form>
+    </div>
+
+    <!-- RSA Encryption Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js"></script>
+    
+    <script>
+        // Store the public key from the server
+        const publicKey = `{{ public_key|safe }}`;
+    </script>
+    
+    <!-- Main OTP JavaScript -->
+    <script src="{{ url_for('static', filename='otp/otp.js') }}"></script>
+</body>
+</html>
